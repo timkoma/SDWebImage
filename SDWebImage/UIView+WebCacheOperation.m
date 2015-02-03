@@ -25,6 +25,8 @@ static char loadOperationKey;
 
 - (void)sd_setImageLoadOperation:(id)operation forKey:(NSString *)key {
     [self sd_cancelImageLoadOperationWithKey:key];
+    if (!operation)
+        return;
     NSMutableDictionary *operationDictionary = [self operationDictionary];
     [operationDictionary setObject:operation forKey:key];
 }

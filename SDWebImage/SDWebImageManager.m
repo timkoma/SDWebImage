@@ -125,9 +125,6 @@
         url = nil;
     }
 
-    __block SDWebImageCombinedOperation *operation = [SDWebImageCombinedOperation new];
-    __weak SDWebImageCombinedOperation *weakOperation = operation;
-
     BOOL isFailedUrl = NO;
     @synchronized (self.failedURLs) {
         isFailedUrl = [self.failedURLs containsObject:url];
@@ -138,9 +135,11 @@
             NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorFileDoesNotExist userInfo:nil];
             completedBlock(nil, error, SDImageCacheTypeNone, YES, url);
         });
-        return operation;
+        return nil;
     }
 
+    __block SDWebImageCombinedOperation *operation = [SDWebImageCombinedOperation new];
+    __weak SDWebImageCombinedOperation *weakOperation = operation;
     @synchronized (self.runningOperations) {
         [self.runningOperations addObject:operation];
     }
